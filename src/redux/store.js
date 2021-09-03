@@ -1,11 +1,17 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import { rootReducer } from './rootReducer';
+import { configureStore } from '@reduxjs/toolkit';
+/* import { rootReducer } from './rootReducer'; */
+import contactsSlice from './reducer';
 
-const middlewares = [thunk];
+const rootReducer = {
+  contacts: contactsSlice,
+};
 
-export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(...middlewares)),
-);
+export const store = configureStore({
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV === 'development',
+});
+/* import { configureStore } from "@reduxjs/toolkit";
+import todoReducerWithSlice from "../redux/slices/todoSlice";
+const rootReducer = {
+  todos: todoReducerWithSlice,
+}; */

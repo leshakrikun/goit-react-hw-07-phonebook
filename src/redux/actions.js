@@ -1,6 +1,6 @@
 /* import {types} from './types' */
 //+++++++++++++++++++++++++++++++
-import axios from 'axios';
+/* import axios from 'axios';
 import {
   ADD_CONTACTS,
   SET_CONTACTS,
@@ -10,9 +10,9 @@ import {
   FETCH_ERROR_CLEAN,
   DELETE_CONTACT,
   FILTER_CONTACTS,
-} from './types';
+} from './types'; */
 //++++++++++++++++++++++++++++++++
-import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
+/* import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 
 export const addContacts = data => ({
   type: ADD_CONTACTS,
@@ -42,38 +42,37 @@ export const fetchError = error => ({
 });
 export const fetchErrorClean = () => ({
   type: FETCH_ERROR_CLEAN,
-});
+}); */
 //============================================================================================================================
 
-/* import {
-  ADD_TODO,
-  SET_TODO,
-  TODO_FETCH_ERROR,
-  TODO_FETCH_FINISHED,
-  TODO_FETCH_START,
-} from "./types";
-
-export const setTodo = (array) => ({
-  type: SET_TODO,
+/* export const addContacts = data => ({
+  type: types.ADD_CONTACTS,
+  payload: data,
+});
+export const setContacts = array => ({
+  type: types.SET_CONTACTS,
   payload: array,
 });
-
-export const addTodo = (todo) => ({
-  type: ADD_TODO,
-  payload: todo,
+export const deleteContact = id => ({
+  type: types.DELETE_CONTACT,
+  payload: id,
 });
-
-export const todoFetchStart = () => ({
-  type: TODO_FETCH_START,
+export const filterContact = data => ({
+  type: types.FILTER_CONTACTS,
+  payload: data,
 });
-
-export const todoFetchFinished = () => ({
-  type: TODO_FETCH_FINISHED,
+export const fetchStart = () => ({
+  type: types.FETCH_START,
 });
-
-export const todoFetchError = (error) => ({
-  type: TODO_FETCH_ERROR,
+export const fetchFinish = () => ({
+  type: types.FETCH_FINISH,
+});
+export const fetchError = error => ({
+  type: types.FETCH_ERROR,
   payload: error,
+});
+export const fetchErrorClean = () => ({
+  type: types.FETCH_ERROR_CLEAN,
 }); */
 
 // export function addTodo(todo) {
@@ -83,7 +82,7 @@ export const todoFetchError = (error) => ({
 //   };
 // }
 
-export const postContactsOperation = contact => async dispatch => {
+/* export const postContactsOperation = contact => async dispatch => {
   dispatch(fetchStart());
   try {
     const result = await axios.post('http://localhost:7777/contacts', contact);
@@ -130,3 +129,4 @@ export const filterContactOperation = value => async dispatch => {
     dispatch(fetchFinish());
   }
 };
+ */

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { fetchError } from './actions';
 /* import { getContactsOperation } from './operations' */
@@ -9,30 +9,39 @@ import { combineReducers } from 'redux';
 
 import { fetchStart, fetchFinish } from './actions'; //habr
 
-/* import {types} from './types' */
-import {
-  ADD_CONTACTS,
-  SET_CONTACTS,
-  DELETE_CONTACT,
-  FILTER_CONTACTS,
-  /* FETCH_START,
-    FETCH_FINISH, */
-  FETCH_ERROR,
-  FETCH_ERROR_CLEAN,
-} from './types';
+import { types } from './types';
 
-/* ADD_TODO,
-  TODO_FETCH_ERROR,
-  TODO_FETCH_FINISHED,
-  TODO_FETCH_START,
-  SET_TODO, */
+export const createContact = createAsyncThunk(
+  'contacts/createContact',
+  async contact => {
+    const result = await axios.post('http://localhost:7777/contacts', contact);
+    return result.data;
+  },
+);
 
-/*   import {types} from './types'
+export const getContacts = createAsyncThunk(
+  'contacts/getContacts',
+  async () => {
+    const result = await axios.get('http://localhost:7777/contacts');
+    return result.data;
+  },
+);
 
-  export const addContact = (data) => ({
-      type: types.ADD_CONTACTS,
-      payload: data,
-  } */
+export const deleteContacts = createAsyncThunk(
+  'contacts/deleteContacts',
+  async id => {
+    const result = await axios.delete(`http://localhost:7777/contacts/${id}`);
+    return result.data;
+  },
+);
+
+export const filterContacts = createAsyncThunk(
+  'contacts/deleteContacts',
+  async id => {
+    const result = await axios.delete(`http://localhost:7777/contacts/${id}`);
+    return result.data;
+  },
+);
 
 const loaderReducer = (state, { type, payload }) => {
   switch (type) {
@@ -52,41 +61,6 @@ const initialState = {
   loader: null,
   error: null,
 };
-
-const initialState1 = [
-  {
-    name: 'y',
-    number: '666666',
-    id: 'ba167899-5fe5-4689-8953-1d0cdae91bec',
-  },
-  {
-    name: 'n',
-    number: '77777777777',
-    id: 'accd4529-ecd2-4129-8d11-114cccb8d668',
-  },
-  {
-    name: 'gfa',
-    number: '666666666',
-    id: 'f11cda90-6fdf-4904-b679-c52f86bde440',
-  },
-  {
-    name: 'b',
-    number: '666666666',
-    id: 'ec6faeaf-c314-4b0a-bcb1-064a8f349b3d',
-  },
-  {
-    name: 'ds',
-    number: '555555555',
-    id: '202db0cc-7e04-4513-9352-fa2c112bbf17',
-  },
-  {
-    name: 'cxc',
-    number: '555555555',
-    id: '93da2c93-4de2-40b6-9dde-3cfe17b98aae',
-  },
-];
-console.log(3, initialState);
-
 /* const setContacts = (array) => ({
     type: types.SET_CONTACTS,
     payload: array,
@@ -122,8 +96,101 @@ console.log(3, initialState);
       return state;
   }
 }; */
+const contactsSlice = createSlice({
+  name: 'contacts',
+  initialState: {
+    items: [],
+    loader: false,
+    error: '',
+  },
+  reducers: {
+    /*  addContacts: (state, {payload}) => ({
+       ...state, items: [...state.items, payload] 
+    }),
+    setContacts: (state, {payload}) => ({
+        ...state, items: [payload] 
+    }),
+    deleteContact(state, action) {
+      return {
+        ...state,
+        contacts: [...state.filter(state => state.id !== action.payload)],
+      };
+    },
+    fetchStart(state, action) {
+      console.log(33, state);
+      return { ...state, loader: [(action.payload = true)] };
+    },
+    fetchFinish(state, action) {
+      return { ...state, loader: [(action.payload = false)] };
+    },*/
+    filterContact(state, action) {
+      return { ...state, filter: action.payload };
+    },
+  },
 
-export const contactsSlice = (state = initialState, { type, payload }) => {
+  /*  [deleteContact.fulfilled]: (state, action) =>
+  state.filter((element) => element.id !== action.meta.arg),
+}); */
+
+  /* [deleteContact.fulfilled]: (state, action) =>
+state.filter((element) => element.id !== action.meta.arg),
+}); */
+
+  extraReducers: {
+    [deleteContacts.pending]: state => {
+      state.loader = true;
+    },
+    [deleteContacts.rejected]: state => {
+      state.loader = false;
+      state.error = 'Error';
+    },
+    [deleteContacts.fulfilled]: (state, action) => {
+      state.loader = false;
+      state.error = '';
+      state.items = state.items.filter(state => state.id !== action.meta.arg);
+    },
+    /* [filterContacts.pending]: (state) => {
+      state.loader = true;
+    },
+    [filterContacts.rejected]: (state) => {
+      state.loader = false;
+      state.error = "Error"
+    },
+    [filterContacts.fulfilled]: (state, action) => {
+      state.loader = false;
+      state.error = "";
+      state.items = state.items.filter(state => state.id !== action.meta.arg)
+    }, */
+    [createContact.pending]: (state, action) => {
+      state.loader = true;
+    },
+    [createContact.rejected]: (state, action) => {
+      state.loader = false;
+      state.error = 'Error';
+    },
+    [createContact.fulfilled]: (state, action) => {
+      state.loader = false;
+      state.error = '';
+      state.items = [...state.items, action.payload];
+    },
+    [getContacts.pending]: state => {
+      state.loader = true;
+    },
+    [getContacts.rejected]: state => {
+      state.loader = false;
+      state.error = 'Error';
+    },
+    [getContacts.fulfilled]: (state, { payload }) => {
+      state.loader = false;
+      state.error = '';
+      state.items = [...state.items, ...payload];
+    },
+  },
+});
+
+export const { addContacts, setContacts } = contactsSlice.actions;
+export default contactsSlice.reducer;
+/* export const contactsSlice = (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_CONTACTS:
       return { ...state, items: [...state.items, payload] };
@@ -138,9 +205,9 @@ export const contactsSlice = (state = initialState, { type, payload }) => {
       return {
         ...state,
         items: [...state.items.filter(state => state.name.includes(payload))],
-      };
+      }; */
 
-    /* setContacts(state, action) {
+/* setContacts(state, action) {
       console.log(7);
         return {...state,items:[action.payload]};
     },
@@ -156,12 +223,12 @@ export const contactsSlice = (state = initialState, { type, payload }) => {
     },
     filterContact(state, action) {
         return {...state, filter: action.payload};
-    } */
+    } 
     default:
       return state;
   }
-};
-console.log(`contactsSlice`, contactsSlice.items);
+};*/
+/* console.log(`contactsSlice`, contactsSlice.items); */
 /* 
 export const getContactsOperation = () => async (dispatch) => {
   dispatch(fetchStart())

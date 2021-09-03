@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import { contactsSlice } from '../../redux/reducer';
+import { createContact, setContacts } from '../../redux/reducer';
 import {
   postContactsOperation,
   getContactsOperation,
@@ -41,15 +41,14 @@ const Phonebook = () => {
     e.preventDefault();
     console.log('contacts', contacts);
 
-    /*    const result = contacts.find(state  => name === state.name ); 
-    if(result){
-      alert(name + ` is already in contact`)
-    } */
-    /* else  {*/
-
-    /* dispatch(contactsSlice.actions.addContacts({name, number, id: uuidv4()})) */
-    dispatch(postContactsOperation({ name, number, id: uuidv4() }));
-    dispatch(getContactsOperation());
+    const result = contacts.items.find(state => name === state.name);
+    if (result) {
+      alert(name + ` is already in contact`);
+    } else {
+      dispatch(createContact({ name, number, id: uuidv4() }));
+    }
+    /* dispatch(postContactsOperation({ name, number, id: uuidv4() })); */
+    /* dispatch(setContacts()); */
     /* }  */
     setName('');
     setNumber('');

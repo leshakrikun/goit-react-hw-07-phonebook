@@ -1,25 +1,28 @@
-import { contactsSlice } from '../../redux/reducer';
+import { addContacts } from '../../redux/reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContactOperation } from '../../redux/actions';
+import { deleteContacts } from '../../redux/reducer';
+import { contacts, filteredContacts } from '../../redux/contacts-selectors';
 
 import s from './contacts.module.css';
 
-const Contacts = ({ contacts: { items } }) => {
-  const state = useSelector(state => state.contactsSlice);
-
+const Contacts = () => {
+  const state = useSelector(state => contacts(state));
+  /* const { items} = state;
   console.log(`contacts13`, items);
-  console.log(`contacts14`, state);
+  console.log(`contacts14`, state); */
   const dispatch = useDispatch();
+
   const handleDeleteContact = id => {
-    dispatch(deleteContactOperation(id));
+    console.log('id', id);
+    dispatch(deleteContacts(id));
   };
 
   return (
     <>
-      {items?.length > 0 && (
+      {state?.length > 0 && (
         <div className={s.contactListformat}>
           <ul className={s.contactList}>
-            {items.map(({ id, name, number }) => (
+            {state.map(({ id, name, number }) => (
               <li key={id}>
                 {name}: {}
                 {number}
