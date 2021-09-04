@@ -8,14 +8,7 @@ import {
   setContacts,
 } from './actions';
 import { loaderReducer } from './loaderReducer';
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-/* export const postTodoOperation = (todo) => async (dispatch) => {
-  const result = await axios.post("http://localhost:7777/tasks", todo);
-  console.log("result", result);
-}; */
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+/* 
 export const postContactsOperation = contact => async dispatch => {
   dispatch(fetchStart());
   try {
@@ -45,7 +38,7 @@ export const getContactsOperation = state => async dispatch => {
     dispatch(fetchFinish());
     console.log(2);
   }
-};
+}; */
 
 /* export const getContactsOperation = (result) => async dispatch => {
   /* dispatch(booksActions.fetchBooksRequest()); 

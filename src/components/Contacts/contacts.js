@@ -1,28 +1,31 @@
-import { addContacts } from '../../redux/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContacts } from '../../redux/reducer';
-import { contacts, filteredContacts } from '../../redux/contacts-selectors';
+import { contacts } from '../../redux/contacts-selectors';
 
 import s from './contacts.module.css';
-
+let search = '';
 const Contacts = () => {
   const state = useSelector(state => contacts(state));
-  /* const { items} = state;
-  console.log(`contacts13`, items);
-  console.log(`contacts14`, state); */
+
+  if (state.items) {
+    search = state.items;
+  }
+  if (Array.isArray(state.filter)) {
+    search = state.filter;
+  }
+
   const dispatch = useDispatch();
 
   const handleDeleteContact = id => {
-    console.log('id', id);
     dispatch(deleteContacts(id));
   };
 
   return (
     <>
-      {state?.length > 0 && (
+      {search.length > 0 && (
         <div className={s.contactListformat}>
           <ul className={s.contactList}>
-            {state.map(({ id, name, number }) => (
+            {search.map(({ id, name, number }) => (
               <li key={id}>
                 {name}: {}
                 {number}
