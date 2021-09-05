@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import Phonebook from './components/PhoneBook/phoneBook';
 import Contacts from './components/Contacts/contacts';
 import Filter from './components/Filter/filter';
+import { getContacts } from './redux/actions';
 import './App.css';
-import { getContacts } from './redux/reducer';
 
 export default function App() {
   const dispatch = useDispatch();

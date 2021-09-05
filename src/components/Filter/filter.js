@@ -1,23 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { contactsSlice, filterContact } from '../../redux/reducer';
-import { filterContactOperation } from '../../redux/actions';
+import { filterContact } from '../../redux/reducer';
 import { getVisibleContacts } from '../../redux/contacts-selectors';
+import { forFilterState } from '../../redux/contacts-selectors';
 
 import PropTypes from 'prop-types';
 import s from './filter.module.css';
 
 const Filter = () => {
   const dispatch = useDispatch();
-  const state = useSelector(state => state.contacts);
+  const filterState = useSelector(state => forFilterState(state));
 
   const handleChange = e => {
     const { value } = e.target;
-    /* dispatch(filterContactOperation( value )) */
-    console.log(`value`, value);
-    console.log(`state11`, state);
-    /*  dispatch(getVisibleContacts(value)); */
-    const filterCont = getVisibleContacts(state.items, value);
-    console.log(`filterCont`, filterCont);
+    const filterCont = getVisibleContacts(filterState, value);
     dispatch(filterContact(filterCont));
   };
 

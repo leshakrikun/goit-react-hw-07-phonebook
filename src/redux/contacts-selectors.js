@@ -9,3 +9,4 @@ export const getVisibleContacts = (state, value) => {
 };
 
 export const contacts = state => getVisibleContacts(state);
+export const forFilterState = state => state.contacts.items;

@@ -1,19 +1,17 @@
 import { React, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import { createContact, setContacts } from '../../redux/reducer';
-import {
-  postContactsOperation,
-  getContactsOperation,
-} from '../../redux/operations';
+import { createContact } from '../../redux/actions';
+import { contacts } from '../../redux/contacts-selectors';
+
 import s from './phonebook.module.css';
 
 const Phonebook = () => {
   const dispatch = useDispatch();
-  const state = useSelector(state => state);
+  const state = useSelector(state => contacts(state));
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const { contacts } = state;
+  const { items } = state;
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -32,24 +30,14 @@ const Phonebook = () => {
     }
   };
 
-  /* const handleChange = (event) => {
-    const { value, name } = event.target;
-    setTodo({ ...todo, [name]: value });
-  }; */
-
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('contacts', contacts);
-
-    const result = contacts.items.find(state => name === state.name);
+    const result = items.find(state => name === state.name);
     if (result) {
       alert(name + ` is already in contact`);
     } else {
       dispatch(createContact({ name, number, id: uuidv4() }));
     }
-    /* dispatch(postContactsOperation({ name, number, id: uuidv4() })); */
-    /* dispatch(setContacts()); */
-    /* }  */
     setName('');
     setNumber('');
   };

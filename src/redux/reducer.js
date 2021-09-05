@@ -1,50 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-export const createContact = createAsyncThunk(
-  'contacts/createContact',
-  async contact => {
-    const result = await axios.post('http://localhost:7777/contacts', contact);
-    return result.data;
-  },
-);
-
-export const getContacts = createAsyncThunk(
-  'contacts/getContacts',
-  async () => {
-    const result = await axios.get('http://localhost:7777/contacts');
-    return result.data;
-  },
-);
-
-export const deleteContacts = createAsyncThunk(
-  'contacts/deleteContacts',
-  async id => {
-    const result = await axios.delete(`http://localhost:7777/contacts/${id}`);
-    return result.data;
-  },
-);
-
-export const filterContacts = createAsyncThunk(
-  'contacts/deleteContacts',
-  async id => {
-    const result = await axios.delete(`http://localhost:7777/contacts/${id}`);
-    return result.data;
-  },
-);
-
-/* const loaderReducer = (state, { type, payload }) => {
-  switch (type) {
-    case fetchStart:
-      console.log(22);
-      return { loader: true };
-    case fetchFinish:
-      console.log(23);
-      return { loader: false };
-    default:
-      return state;
-  }
-}; */
+import { createSlice } from '@reduxjs/toolkit';
+import { deleteContacts, createContact, getContacts } from './actions';
 
 const initialState = {
   items: [],
@@ -59,6 +14,12 @@ const contactsSlice = createSlice({
   reducers: {
     filterContact(state, action) {
       return { ...state, filter: action.payload };
+    },
+    deleteFilteredContact(state, action) {
+      return {
+        ...state,
+        filter: [...state.filter.filter(state => state.id !== action.payload)],
+      };
     },
   },
 
@@ -75,7 +36,6 @@ const contactsSlice = createSlice({
       state.error = '';
       state.items = state.items.filter(state => state.id !== action.meta.arg);
     },
-
     [createContact.pending]: (state, action) => {
       state.loader = true;
     },
@@ -103,6 +63,5 @@ const contactsSlice = createSlice({
   },
 });
 
-export const { addContacts, setContacts, filterContact } =
-  contactsSlice.actions;
+export const { filterContact, deleteFilteredContact } = contactsSlice.actions;
 export default contactsSlice.reducer;
